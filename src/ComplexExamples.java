@@ -4,6 +4,7 @@
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.groupingBy;
@@ -52,8 +53,8 @@ public class ComplexExamples {
             new Person(5, "Amelia"),
             new Person(5, "Amelia"),
             new Person(6, "Amelia"),
-            new Person(7, "Amelia"),
             new Person(8, "Amelia"),
+            new Person(7, "Amelia"),
     };
         /*  Raw data:
 
@@ -118,20 +119,12 @@ public class ComplexExamples {
                 Value:1
          */
 
-        //Убираем дубликаты
-        List<Person> listPerson = Arrays.stream(RAW_DATA).distinct().toList();
-
-        //Отсортировываем по идентификатору
-        Map<String, List<Person>> mapPerson = listPerson.stream()
-                .collect(Collectors.groupingBy(Person::getName));
-
-        //Сгруппировываем по имени
-        Map<String, Integer> mapPersonSort = new HashMap<>();
-        mapPerson.entrySet()
-                .stream()
-                .sorted(Map.Entry.comparingByKey())
-                .forEach(x -> mapPersonSort.put(x.getKey(), x.getValue().size()));
-        System.out.println(mapPersonSort);
+        Map<String, Long> mapPerson = Arrays.stream(RAW_DATA)
+                .distinct()                                                              //Убираем дубликаты и
+                .filter(Objects::nonNull)
+                .sorted(Comparator.comparing(Person::getId))                             //отсортировываем по идентификатору
+                .collect(groupingBy(Person::getName, Collectors.counting())); //Сгруппировываем по имени
+        System.out.println(mapPerson);
 
         /*
         Task2
@@ -146,13 +139,10 @@ public class ComplexExamples {
         System.out.println();
 
         int[] array = {3, 4, 2, 7};
-        for (int i = 0; i < array.length; i++) {
-            for (int j = i; j < array.length; j++) {
-                if (array[i] + array[j] == 10) {
-                    System.out.println(Arrays.toString(new int[]{array[i], array[j]}));
-                }
-            }
-        }
+        IntStream.range(0, array.length)
+                .forEach(i -> IntStream.range(0, array.length)
+                        .filter(j -> i < j && array[i] + array[j] == 10)
+                        .forEach(j -> System.out.println(Arrays.toString(new int[]{array[i], array[j]}))));
 
         /*
         Task3
@@ -182,8 +172,11 @@ public class ComplexExamples {
     }
 
     static boolean fuzzySearch(String keyWord, String text) {
+        if (keyWord == null && text == null) {
+            return false;
+        }
         int count = 0;
-        for (int i = 0; i < keyWord.length(); i++) {
+        for (int i = 0; i < Objects.requireNonNull(keyWord).length(); i++) {
             char letterKeyWord = keyWord.charAt(i);
             boolean flag = false;
             for (int j = count; j < text.length(); j++) {
@@ -195,7 +188,7 @@ public class ComplexExamples {
                 }
             }
             if (!flag) {
-                return flag;
+                return false;
             }
         }
         return true;
