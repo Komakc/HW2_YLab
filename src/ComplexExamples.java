@@ -172,7 +172,10 @@ public class ComplexExamples {
     }
 
     static boolean fuzzySearch(String keyWord, String text) {
-        if (keyWord == null && text == null) {
+        if (keyWord == null || text == null) {
+            return false;
+        }
+        if (keyWord.equals("") || text.equals("")) {
             return false;
         }
         int count = 0;
