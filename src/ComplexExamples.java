@@ -1,7 +1,6 @@
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.groupingBy;
 
@@ -181,7 +180,6 @@ public class ComplexExamples {
         IntStream.range(0, arr.length)
                 .forEach(i -> IntStream.range(0, arr.length)
                         .filter(j -> i < j && arr[i] + arr[j] == sum)
-                        .limit(2)
                         .forEach(j -> System.out.println(Arrays.toString(new int[]{arr[i], arr[j]}))));
     }
 
@@ -192,21 +190,13 @@ public class ComplexExamples {
         if (keyWord.equals("") || text.equals("")) {
             return false;
         }
-        int count = 0;
+        int index = 0;
         for (int i = 0; i < Objects.requireNonNull(keyWord).length(); i++) {
             char letterKeyWord = keyWord.charAt(i);
-            boolean flag = false;
-            for (int j = count; j < text.length(); j++) {
-                char letterText = text.charAt(j);
-                if (letterText == letterKeyWord) {
-                    flag = true;
-                    count = j + 1;
-                    break;
-                }
-            }
-            if (!flag) {
+            if ((index = text.indexOf(letterKeyWord, index)) == -1) {
                 return false;
             }
+            index++;
         }
         return true;
     }
