@@ -134,9 +134,10 @@ public class ComplexExamples {
         System.out.println();
 
         int[] array = {3, 4, 2, 7};
+        int sum = 10;
         IntStream.range(0, array.length)
                 .forEach(i -> IntStream.range(0, array.length)
-                        .filter(j -> i < j && array[i] + array[j] == 10)
+                        .filter(j -> i < j && array[i] + array[j] == sum)
                         .forEach(j -> System.out.println(Arrays.toString(new int[]{array[i], array[j]}))));
 
         /*
