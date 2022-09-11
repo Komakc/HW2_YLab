@@ -178,6 +178,9 @@ public class ComplexExamples {
         if (keyWord.equals("") || text.equals("")) {
             return false;
         }
+        if (keyWord.equals("") && text.equals("")) {
+            return false;
+        }
         int count = 0;
         for (int i = 0; i < Objects.requireNonNull(keyWord).length(); i++) {
             char letterKeyWord = keyWord.charAt(i);
