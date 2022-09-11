@@ -120,9 +120,9 @@ public class ComplexExamples {
          */
 
         Map<String, Long> mapPerson = Arrays.stream(RAW_DATA)
-                .distinct()                                                              //Убираем дубликаты и
+                .distinct()                                                   //Убираем дубликаты
                 .filter(Objects::nonNull)
-                .sorted(Comparator.comparing(Person::getId))                             //отсортировываем по идентификатору
+                .sorted(Comparator.comparing(Person::getId))                  //Отсортировываем по идентификатору
                 .collect(groupingBy(Person::getName, Collectors.counting())); //Сгруппировываем по имени
         System.out.println(mapPerson);
 
