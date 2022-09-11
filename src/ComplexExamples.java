@@ -1,6 +1,7 @@
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.groupingBy;
 
@@ -115,10 +116,19 @@ public class ComplexExamples {
          */
 
         Map<String, Long> mapPerson = Arrays.stream(RAW_DATA)
-                .distinct()                                                   //Убираем дубликаты
                 .filter(Objects::nonNull)
+                .distinct()                                                   //Убираем дубликаты
                 .sorted(Comparator.comparing(Person::getId))                  //Отсортировываем по идентификатору
-                .collect(groupingBy(Person::getName, Collectors.counting())); //Сгруппировываем по имени
+                .collect(groupingBy(Person::getName, Collectors.counting()))
+                .entrySet()                                                   //Сгруппировываем по имени
+                .stream()
+                .sorted(Map.Entry.comparingByKey())
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (first, conflict) -> first,
+                        LinkedHashMap::new
+                ));
         System.out.println(mapPerson);
 
         /*
@@ -135,10 +145,7 @@ public class ComplexExamples {
 
         int[] array = {3, 4, 2, 7};
         int sum = 10;
-        IntStream.range(0, array.length)
-                .forEach(i -> IntStream.range(0, array.length)
-                        .filter(j -> i < j && array[i] + array[j] == sum)
-                        .forEach(j -> System.out.println(Arrays.toString(new int[]{array[i], array[j]}))));
+        findPairEqualsSum(array, sum);
 
         /*
         Task3
@@ -165,6 +172,17 @@ public class ComplexExamples {
         System.out.println("Assert: false --> result: " + fuzzySearch("cwheeel", "cartwheel")); // false
         System.out.println("Assert: false --> result: " + fuzzySearch("lw", "cartwheel")); // false
 
+    }
+
+    static void findPairEqualsSum(int[] arr, int sum) {
+        if (arr == null) {
+            System.out.println(Arrays.toString(new int[]{}));
+        }
+        IntStream.range(0, arr.length)
+                .forEach(i -> IntStream.range(0, arr.length)
+                        .filter(j -> i < j && arr[i] + arr[j] == sum)
+                        .limit(2)
+                        .forEach(j -> System.out.println(Arrays.toString(new int[]{arr[i], arr[j]}))));
     }
 
     static boolean fuzzySearch(String keyWord, String text) {
