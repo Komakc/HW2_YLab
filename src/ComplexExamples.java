@@ -37,20 +37,9 @@ public class ComplexExamples {
         }
     }
 
-    private static Person[] RAW_DATA = new Person[]{
-            new Person(0, "Harry"),
-            new Person(0, "Harry"), // дубликат
+    private static Person[] RAW_DATA = new Person[]{new Person(0, "Harry"), new Person(0, "Harry"), // дубликат
             new Person(1, "Harry"), // тёзка
-            new Person(2, "Harry"),
-            new Person(3, "Emily"),
-            new Person(4, "Jack"),
-            new Person(4, "Jack"),
-            new Person(5, "Amelia"),
-            new Person(5, "Amelia"),
-            new Person(6, "Amelia"),
-            new Person(8, "Amelia"),
-            new Person(7, "Amelia"),
-    };
+            new Person(2, "Harry"), new Person(3, "Emily"), new Person(4, "Jack"), new Person(4, "Jack"), new Person(5, "Amelia"), new Person(5, "Amelia"), new Person(6, "Amelia"), new Person(8, "Amelia"), new Person(7, "Amelia"),};
         /*  Raw data:
 
         0 - Harry
@@ -114,20 +103,10 @@ public class ComplexExamples {
                 Value:1
          */
 
-        Map<String, Long> mapPerson = Arrays.stream(RAW_DATA)
-                .filter(Objects::nonNull)
-                .distinct()                                                   //Убираем дубликаты
+        Map<String, Long> mapPerson = Arrays.stream(RAW_DATA).filter(Objects::nonNull).distinct()                                                   //Убираем дубликаты
                 .sorted(Comparator.comparing(Person::getId))                  //Отсортировываем по идентификатору
-                .collect(groupingBy(Person::getName, Collectors.counting()))
-                .entrySet()                                                   //Сгруппировываем по имени
-                .stream()
-                .sorted(Map.Entry.comparingByKey())
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (first, conflict) -> first,
-                        LinkedHashMap::new
-                ));
+                .collect(groupingBy(Person::getName, Collectors.counting())).entrySet()                                                   //Сгруппировываем по имени
+                .stream().sorted(Map.Entry.comparingByKey()).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (first, conflict) -> first, LinkedHashMap::new));
         System.out.println(mapPerson);
 
         /*
@@ -144,7 +123,7 @@ public class ComplexExamples {
 
         int[] array = {3, 4, 2, 7};
         int sum = 10;
-        findPairEqualsSum(array, sum);
+        System.out.println(Arrays.toString(findPairEqualsSum(array, sum)));
 
         /*
         Task3
@@ -173,14 +152,24 @@ public class ComplexExamples {
 
     }
 
-    static void findPairEqualsSum(int[] arr, int sum) {
+    static int[] findPairEqualsSum(int[] arr, int sum) {
         if (arr == null) {
-            System.out.println(Arrays.toString(new int[]{}));
+            System.out.println(Arrays.toString(new int[0]));
         }
-        IntStream.range(0, arr.length)
-                .forEach(i -> IntStream.range(0, arr.length)
-                        .filter(j -> i < j && arr[i] + arr[j] == sum)
-                        .forEach(j -> System.out.println(Arrays.toString(new int[]{arr[i], arr[j]}))));
+        int l = 0;
+        int r = arr.length - 1;
+        while (l < r) {
+            int s = arr[l] + arr[r];
+            if (s == sum) {
+                return new int[]{arr[l], arr[r]};
+            }
+            if (s < sum) {
+                l++;
+            } else {
+                l--;
+            }
+        }
+        return new int[0];
     }
 
     static boolean fuzzySearch(String keyWord, String text) {
