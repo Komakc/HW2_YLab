@@ -103,10 +103,15 @@ public class ComplexExamples {
                 Value:1
          */
 
-        Map<String, Long> mapPerson = Arrays.stream(RAW_DATA).filter(Objects::nonNull).distinct()                                                   //Убираем дубликаты
+        Map<String, Long> mapPerson = Arrays.stream(RAW_DATA).filter(Objects::nonNull)
+                .distinct()                                                   //Убираем дубликаты
                 .sorted(Comparator.comparing(Person::getId))                  //Отсортировываем по идентификатору
-                .collect(groupingBy(Person::getName, Collectors.counting())).entrySet()                                                   //Сгруппировываем по имени
-                .stream().sorted(Map.Entry.comparingByKey()).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (first, conflict) -> first, LinkedHashMap::new));
+                .collect(groupingBy(Person::getName, Collectors.counting()))
+                .entrySet()                                                   //Сгруппировываем по имени
+                .stream()
+                .sorted(Map.Entry.comparingByKey())
+                .collect(Collectors
+                        .toMap(Map.Entry::getKey, Map.Entry::getValue, (first, conflict) -> first, LinkedHashMap::new));
         System.out.println(mapPerson);
 
         /*
