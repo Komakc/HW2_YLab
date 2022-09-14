@@ -39,7 +39,15 @@ public class ComplexExamples {
 
     private static Person[] RAW_DATA = new Person[]{new Person(0, "Harry"), new Person(0, "Harry"), // дубликат
             new Person(1, "Harry"), // тёзка
-            new Person(2, "Harry"), new Person(3, "Emily"), new Person(4, "Jack"), new Person(4, "Jack"), new Person(5, "Amelia"), new Person(5, "Amelia"), new Person(6, "Amelia"), new Person(8, "Amelia"), new Person(7, "Amelia"),};
+            new Person(2, "Harry"),
+            new Person(3, "Emily"),
+            new Person(4, "Jack"),
+            new Person(4, "Jack"),
+            new Person(5, "Amelia"),
+            new Person(5, "Amelia"),
+            new Person(6, "Amelia"),
+            new Person(8, "Amelia"),
+            new Person(7, "Amelia"),};
         /*  Raw data:
 
         0 - Harry
@@ -159,7 +167,7 @@ public class ComplexExamples {
 
     static int[] findPairEqualsSum(int[] arr, int sum) {
         if (arr == null) {
-            System.out.println(Arrays.toString(new int[0]));
+            return new int[0];
         }
         int l = 0;
         int r = arr.length - 1;
