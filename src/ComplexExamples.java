@@ -173,13 +173,13 @@ public class ComplexExamples {
         int r = arr.length - 1;
         while (l < r) {
             int s = arr[l] + arr[r];
-            if (s == sum) {
+            if (s == sum) {g
                 return new int[]{arr[l], arr[r]};
             }
             if (s < sum) {
                 l++;
             } else {
-                l--;
+                r--;
             }
         }
         return new int[0];
