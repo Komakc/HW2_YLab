@@ -169,6 +169,7 @@ public class ComplexExamples {
         if (arr == null) {
             return new int[0];
         }
+        Arrays.sort(arr);
         int l = 0;
         int r = arr.length - 1;
         while (l < r) {
